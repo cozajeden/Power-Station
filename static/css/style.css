@@ -1,0 +1,45 @@
+.values {
+    height: 90vh;
+    width: 30vw;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border: 1px solid red;
+    overflow-y: scroll;
+}
+
+.msg {
+    border: 1px solid purple;
+    width: 100%;
+    overflow-wrap: break-word;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid green;
+}
+
+.container > * {
+    margin: 0 5px;
+}
+
+.commands {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn.cmd {
+    font-size: xx-large;
+}
+
+.system {
+    color: greenyellow;
+}
+
+.sending {
+    color: blue;
+}

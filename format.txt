@@ -1,0 +1,2 @@
+*bool = 1/0
+get status zwraca wartości "1:<val1>/2:<val2>.."

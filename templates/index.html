@@ -1,0 +1,64 @@
+<link rel="stylesheet" href="/static/css/style.css">
+<div class ="container">
+    <div class="commands">
+        <button class="btn cmd" id="identify">identify</button>
+        <button class="btn cmd" id="help">help</button>
+        <button class="btn cmd" id="status">status</button>
+    </div>
+    <div class="communication">
+        <div class="input">
+            <input type="text" id="message" placeholder="message">
+            <button class="btn" id="send">send</button>
+        </div>
+        <div class="values"></div>
+    </div>
+    <div class="statuses">
+    </div>
+</div>
+<script src="/static/js/socket.io.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    let values = document.querySelector('.values');
+    let input = document.querySelector('#message');
+    let send = document.querySelector('#send');
+    let identify = document.querySelector('#identify');
+    let help = document.querySelector('#help');
+    let status = document.querySelector('#status');
+    let socket = io();
+    socket.on('connect', function() {
+        console.log('Connected to server');
+        socket.emit('message', 'hello');
+        p = document.createElement('div');
+        p.innerHTML = 'connected';
+        p.classList.add('msg');
+        p.classList.add('system');
+        values.appendChild(p);
+    });
+    socket.on('sending', function(msg) {
+        console.log(msg);
+        p = document.createElement('div');
+        p.innerHTML = msg;
+        p.classList.add('msg');
+        p.classList.add('sending');
+        values.insertBefore(p, values.firstChild);
+    });
+    socket.on('receiving', function(msg) {
+        console.log(msg);
+        p = document.createElement('div');
+        p.innerHTML = msg;
+        p.classList.add('msg');
+        values.insertBefore(p, values.firstChild);
+    });
+    identify.addEventListener('click', function() {
+        socket.emit('command', 'IDN?');
+    });
+    help.addEventListener('click', function() {
+        socket.emit('command', 'HELP');
+    });
+    status.addEventListener('click', function() {
+        socket.emit('command', 'GET_STATUS');
+    });
+    send.addEventListener('click', function() {
+        socket.emit('command', input.value);
+    });
+</script>
