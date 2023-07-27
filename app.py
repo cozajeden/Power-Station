@@ -20,7 +20,7 @@ def serial_handler(queue: Queue):
 
 def serial_listener():
     while True:
-        data = ser.readline().decode()
+        data = ser.read(1024)
         socketio.emit('recieving', data)
 
 @app.route('/')
