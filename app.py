@@ -37,5 +37,7 @@ def handle_json(command):
 
 if __name__ == '__main__':
     serial_thread = Thread(target=serial_handler, args=(command_queue,), daemon=True)
+    listener_thread = Thread(target=serial_listener, daemon=True)
+    listener_thread.start()
     serial_thread.start()
     socketio.run(app, host='0.0.0.0', port=5000)
