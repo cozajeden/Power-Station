@@ -91,7 +91,7 @@
         p.classList.add('sending');
         values.insertBefore(p, values.firstChild);
     });
-    socket.on('receiving', function(msg) {
+    socket.on('recieving', function(msg) {
         console.log(msg);
         p = document.createElement('div');
         p.innerHTML = msg;

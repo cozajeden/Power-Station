@@ -10,20 +10,22 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode='threading')
 
 command_queue = Queue()
-ser = serial.Serial('COM5', 115200)
+# ser = serial.Serial('COM5', 115200)
 
 def serial_handler(queue: Queue):
     while True:
         data = queue.get()
-        ser.write(data.encode('utf-8'))
+        # ser.write(data.encode('utf-8'))
         socketio.emit('sending', data)
         queue.task_done()
 
 def serial_listener():
     while True:
-        data = ser.read(1024)
-        data = data.decode('utf-8')
+        # data = ser.read(1024)
+        # data = data.decode('utf-8')
+        data = 'test'
         socketio.emit('recieving', data)
+        sleep(1)
 
 def cyclic_get_status(queue: Queue):
     while True:
