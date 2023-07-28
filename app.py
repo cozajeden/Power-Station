@@ -9,20 +9,25 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, async_mode='threading')
 
 command_queue = Queue()
-ser = serial.Serial('COM3', 9600)
+# ser = serial.Serial('COM5', 115200)
 
 def serial_handler(queue: Queue):
     while True:
         data = queue.get()
-        ser.write(data.encode('utf-8'))
+        # ser.write(data.encode('utf-8'))
         socketio.emit('sending', data)
         queue.task_done()
 
 def serial_listener():
+    while True:...
+        # data = ser.read(1024)
+        # data = data.decode('utf-8')
+        # socketio.emit('recieving', data)
+
+def cyclic_get_status(queue: Queue):
     while True:
-        data = ser.read(1024)
-        data = data.decode('utf-8')
-        socketio.emit('recieving', data)
+        queue.put('GET_STATUS')
+        socketio.sleep(2)
 
 @app.route('/')
 async def index():
@@ -39,6 +44,8 @@ def handle_json(command):
 if __name__ == '__main__':
     serial_thread = Thread(target=serial_handler, args=(command_queue,), daemon=True)
     listener_thread = Thread(target=serial_listener, daemon=True)
-    listener_thread.start()
+    cyclic_thread = Thread(target=cyclic_get_status, args=(command_queue,), daemon=True)
     serial_thread.start()
+    listener_thread.start()
+    cyclic_thread.start()
     socketio.run(app, host='0.0.0.0', port=5000)
