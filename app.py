@@ -3,6 +3,7 @@ from flask_socketio import SocketIO, send, emit
 from threading import Thread
 from queue import Queue
 import serial
+from time import sleep
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -27,7 +28,7 @@ def serial_listener():
 def cyclic_get_status(queue: Queue):
     while True:
         queue.put('GET_STATUS')
-        socketio.sleep(2)
+        sleep(2)
 
 @app.route('/')
 async def index():
