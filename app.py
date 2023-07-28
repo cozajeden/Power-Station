@@ -23,7 +23,6 @@ def serial_listener():
     while True:
         data = ser.read(1024)
         data = data.decode('utf-8')
-        data = 'test'
         socketio.emit('recieving', data)
         sleep(1)
 
