@@ -24,7 +24,6 @@ def serial_listener():
         data = ser.read(1024)
         data = data.decode('utf-8')
         socketio.emit('recieving', data)
-        sleep(1)
 
 def cyclic_get_status(queue: Queue):
     while True:
