@@ -1,9 +1,35 @@
 <link rel="stylesheet" href="/static/css/style.css">
-<div class ="container">
+<div class ="my-container">
     <div class="commands">
-        <button class="btn cmd" id="identify">identify</button>
         <button class="btn cmd" id="help">help</button>
+        <div class="cmd param">
+            <button class="btn par" id="light-power-button">Light power[%]</button>
+            <input type="number" id="light-power" min="0" max="100" value="0">
+        </div>
+        <div class="cmd param">
+            <button class="btn par" id="freezer-power-button">Freezer power[%]</button>
+            <input type="number" id="freezer-power" min="0" max="100" value="0">
+        </div>
+        <button class="btn cmd" id="identify">identify</button>
         <button class="btn cmd" id="status">status</button>
+        <button class="btn cmd" id="light-mode-on">light mode auto on</button>
+        <button class="btn cmd" id="light-mode-off">light mode auto off</button>
+        <button class="btn cmd" id="aku-charging-mode-on">aku charging mode on</button>
+        <button class="btn cmd" id="aku-charging-mode-off">aku charging mode off</button>
+        <button class="btn cmd" id="freezer-mode-on">freezer mode on</button>
+        <button class="btn cmd" id="freezer-mode-off">freezer mode off</button>
+        <button class="btn cmd" id="charging-on">charging on</button>
+        <button class="btn cmd" id="charging-off">charging off</button>
+        <button class="btn cmd" id="fan-on">freezer fan on</button>
+        <button class="btn cmd" id="fan-off">freezer fan off</button>
+        <button class="btn cmd" id="pumps-on">freezer pumps on</button>
+        <button class="btn cmd" id="pumps-off">freezer pumps off</button>
+        <button class="btn cmd" id="charger1-on">charger 1 on</button>
+        <button class="btn cmd" id="charger1-off">charger 1 off</button>
+        <button class="btn cmd" id="charger2-on">charger 2 on</button>
+        <button class="btn cmd" id="charger2-off">charger 2 off</button>
+        <button class="btn cmd" id="audio-on">audio on</button>
+        <button class="btn cmd" id="audio-off">audio off</button>
     </div>
     <div class="communication">
         <div class="input">
@@ -17,6 +43,7 @@
 </div>
 <script src="/static/js/socket.io.js"></script>
 <script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
 <script type="text/javascript" charset="utf-8">
     let values = document.querySelector('.values');
     let input = document.querySelector('#message');
@@ -24,6 +51,28 @@
     let identify = document.querySelector('#identify');
     let help = document.querySelector('#help');
     let status = document.querySelector('#status');
+    let light_mode_on = document.querySelector('#light-mode-on');
+    let light_mode_off = document.querySelector('#light-mode-off');
+    let aku_charging_mode_on = document.querySelector('#aku-charging-mode-on');
+    let aku_charging_mode_off = document.querySelector('#aku-charging-mode-off');
+    let freezer_mode_on = document.querySelector('#freezer-mode-on');
+    let freezer_mode_off = document.querySelector('#freezer-mode-off');
+    let charging_on = document.querySelector('#charging-on');
+    let charging_off = document.querySelector('#charging-off');
+    let fan_on = document.querySelector('#fan-on');
+    let fan_off = document.querySelector('#fan-off');
+    let pumps_on = document.querySelector('#pumps-on');
+    let pumps_off = document.querySelector('#pumps-off');
+    let charger1_on = document.querySelector('#charger1-on');
+    let charger1_off = document.querySelector('#charger1-off');
+    let charger2_on = document.querySelector('#charger2-on');
+    let charger2_off = document.querySelector('#charger2-off');
+    let audio2_on = document.querySelector('#audio-on');
+    let audio2_off = document.querySelector('#audio-off');
+    let light_power_button = document.querySelector('#light-power-button');
+    let light_power = document.querySelector('#light-power');
+    let freezer_power_button = document.querySelector('#freezer-power-button');
+    let freezer_power = document.querySelector('#freezer-power');
     let socket = io();
     socket.on('connect', function() {
         console.log('Connected to server');
@@ -49,16 +98,44 @@
         p.classList.add('msg');
         values.insertBefore(p, values.firstChild);
     });
-    identify.addEventListener('click', function() {
-        socket.emit('command', 'IDN?');
+    send.addEventListener('click', function()                  {socket.emit('command', input.value);});
+    light_power_button.addEventListener('click', function()    {
+        if (light_power.value > 100) {
+            light_power.value = 100;
+        }
+        if (light_power.value < 0) {
+            light_power.value = 0;
+        }
+        socket.emit('command', 'LIGHT_FORCE ' + light_power.value);
     });
-    help.addEventListener('click', function() {
-        socket.emit('command', 'HELP');
+    freezer_power_button.addEventListener('click', function()  {
+        if (freezer_power.value > 100) {
+            freezer_power.value = 100;
+        }
+        if (freezer_power.value < 0) {
+            freezer_power.value = 0;
+        }
+        socket.emit('command', 'FREEZER_SET ' + freezer_power.value);
     });
-    status.addEventListener('click', function() {
-        socket.emit('command', 'GET_STATUS');
-    });
-    send.addEventListener('click', function() {
-        socket.emit('command', input.value);
-    });
+    identify.addEventListener('click', function()              {socket.emit('command', 'IDN?');});
+    help.addEventListener('click', function()                  {socket.emit('command', 'HELP');});
+    status.addEventListener('click', function()                {socket.emit('command', 'GET_STATUS');});
+    light_mode_on.addEventListener('click', function()         {socket.emit('command', 'LIGHT_MODE 1');});
+    light_mode_off.addEventListener('click', function()        {socket.emit('command', 'LIGHT_MODE 0');});
+    aku_charging_mode_on.addEventListener('click', function()  {socket.emit('command', 'AUTO_CHARGING 1');});
+    aku_charging_mode_off.addEventListener('click', function() {socket.emit('command', 'AUTO_CHARGING 0');});
+    freezer_mode_on.addEventListener('click', function()       {socket.emit('command', 'FREEZER_AUTO 1');});
+    freezer_mode_off.addEventListener('click', function()      {socket.emit('command', 'FREEZER_AUTO 0');});
+    charging_on.addEventListener('click', function()           {socket.emit('command', 'FORCE_CHARGING 1');});
+    charging_off.addEventListener('click', function()          {socket.emit('command', 'FORCE_CHARGING 0');});
+    fan_on.addEventListener('click', function()                {socket.emit('command', 'FREEZER_FAN 1');});
+    fan_off.addEventListener('click', function()               {socket.emit('command', 'FREEZER_FAN 0');});
+    pumps_on.addEventListener('click', function()              {socket.emit('command', 'FREEZER_PUMPS 1');});
+    pumps_off.addEventListener('click', function()             {socket.emit('command', 'FREEZER_PUMPS 0');});
+    charger1_on.addEventListener('click', function()           {socket.emit('command', 'CHARGER1 1');});
+    charger1_off.addEventListener('click', function()          {socket.emit('command', 'CHARGER1 0');});
+    charger2_on.addEventListener('click', function()           {socket.emit('command', 'CHARGER2 1');});
+    charger2_off.addEventListener('click', function()          {socket.emit('command', 'CHARGER2 0');});
+    audio2_on.addEventListener('click', function()             {socket.emit('command', 'AUDIO 1');});
+    audio2_off.addEventListener('click', function()            {socket.emit('command', 'AUDIO 0');});
 </script>

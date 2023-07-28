@@ -1,6 +1,6 @@
 .values {
     height: 90vh;
-    width: 30vw;
+    flex-grow: 1;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -15,7 +15,7 @@
     overflow-wrap: break-word;
 }
 
-.container {
+.my-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -29,11 +29,24 @@
 
 .commands {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    flex-wrap: wrap;
+    border: 1px solid orange;
+    max-height: 100%;
 }
 
-.btn.cmd {
-    font-size: xx-large;
+.cmd {
+    font-size: x-large;
+    overflow-wrap: break-word;
+    flex-grow: 1;
+    min-width: 50%;
+}
+
+.cmd:first-child {
+    min-width: 90%;
 }
 
 .system {
@@ -42,4 +55,21 @@
 
 .sending {
     color: blue;
+}
+
+.communication {
+    flex-grow: 1;
+    border: 1px solid yellow;
+    min-width: 50%;
+}
+
+.param {
+    display: flex;
+    flex-direction: row;
+}
+
+.par {
+    min-width: 35%;
+    font-size: x-large;
+    flex-grow: 1;
 }
