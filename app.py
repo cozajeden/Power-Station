@@ -4,6 +4,7 @@ from threading import Thread
 from queue import Queue
 import serial
 from time import sleep
+import traceback
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -20,11 +21,15 @@ def serial_handler(queue: Queue):
         queue.task_done()
 
 def serial_listener():
-    while True:
-        data = ser.read(1024)
-        print('recieved: ', data)
-        data = data.decode('utf-8')
-        socketio.emit('recieving', data)
+    try:
+        while True:
+            data = ser.read(1024)
+            print('recieved: ', data)
+            data = data.decode('utf-8')
+            socketio.emit('recieving', data)
+    except Exception as e:
+        print(e)
+        print(traceback.format_exc())
 
 def cyclic_get_status(queue: Queue):
     while True:
