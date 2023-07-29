@@ -21,12 +21,10 @@ def serial_handler(queue: Queue):
 
 def serial_listener():
     while True:
-        if ser.in_waiting > 0:
-            data = ser.read(ser.in_waiting)
-            print('recieved: ', data)
-            data = data.decode('utf-8')
-            socketio.emit('recieving', data)
-        sleep(0.01)
+        data = ser.readline()
+        print('recieved: ', data)
+        data = data.decode('utf-8')
+        socketio.emit('recieving', data)
 
 def cyclic_get_status(queue: Queue):
     while True:
