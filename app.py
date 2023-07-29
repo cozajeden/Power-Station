@@ -29,6 +29,7 @@ command_queue = Queue()
 ser = serial.Serial('COM5', 115200)
 
 def serial_handler(queue: Queue):
+    """"This function is responsible for sending data to serial port"""
     while True:
         data = queue.get()
         ser.write(data.encode('utf-8'))
@@ -37,6 +38,7 @@ def serial_handler(queue: Queue):
         queue.task_done()
 
 def serial_listener():
+    """"This function is responsible for listening to serial port"""
     while True:
         data = ser.readline()
         print('recieved: ', data)
@@ -47,6 +49,7 @@ def serial_listener():
             handle_status_response(data.strip())
 
 def handle_status_response(data: str):
+    """This function is responsible for parsing status response and sending it to client"""
     try:
         parsed_data = {
             VALUE_MAPPING[int(val.split(':')[0])]: int(val.split(':')[1])/100
@@ -58,20 +61,19 @@ def handle_status_response(data: str):
         print('error parsing status response: ', data)
 
 def cyclic_get_status(queue: Queue):
+    """This function is responsible for cyclically sending GET_STATUS command to serial port"""
     while True:
         queue.put('GET_STATUS')
         sleep(2)
 
 @app.route('/')
 async def index():
+    """This function is responsible for rendering index.html"""
     return render_template('index.html')
-
-@socketio.on('json')
-def handle_json(json):
-    print('received json: ' + str(json))
 
 @socketio.on('command')
 def handle_json(command):
+    """"This function is responsible for handling commands from client"""
     command_queue.put(command)
 
 if __name__ == '__main__':
