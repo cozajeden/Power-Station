@@ -1,11 +1,12 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO, send, emit
+from flask import Flask, render_template, send_from_directory
+from flask_socketio import SocketIO
 from threading import Thread
 from queue import Queue
 import serial
 from time import sleep
 import traceback
 import json
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -75,6 +76,12 @@ async def index():
 def handle_json(command):
     """"This function is responsible for handling commands from client"""
     command_queue.put(command)
+
+@app.route('/favicon.ico')
+def favicon():
+    """This function is responsible for serving favicon"""""
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 if __name__ == '__main__':
     serial_thread = Thread(target=serial_handler, args=(command_queue,), daemon=True)
