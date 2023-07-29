@@ -22,7 +22,7 @@ def serial_handler(queue: Queue):
 def serial_listener():
     while True:
         if ser.in_waiting > 0:
-            data = ser.read(1024)
+            data = ser.read(ser.in_waiting)
             print('recieved: ', data)
             data = data.decode('utf-8')
             socketio.emit('recieving', data)
