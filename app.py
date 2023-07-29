@@ -77,14 +77,6 @@ def handle_json(command):
     command_queue.put(command)
 
 if __name__ == '__main__':
-    # def test():
-    #     while True:
-    #         data = {    1: 10,  2: 20,  3: 1233,  4: 40,  5: 50,  6: 630,  7: 70,  8: 80,  9: 90, 10: 100.34, 11: 54}
-    #         data = {VALUE_MAPPING[key]: value for key, value in data.items()}
-    #         socketio.emit('status', json.dumps(data))
-    #         sleep(1)
-    # test_thread = Thread(target=test, daemon=True)
-    # test_thread.start()
     serial_thread = Thread(target=serial_handler, args=(command_queue,), daemon=True)
     listener_thread = Thread(target=serial_listener, daemon=True)
     cyclic_thread = Thread(target=cyclic_get_status, args=(command_queue,), daemon=True)
