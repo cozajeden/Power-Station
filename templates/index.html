@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="/static/css/style.css">
 <div class ="my-container">
     <div class="commands">
+        <div class="status-container">dddddddd</div>
         <button class="btn cmd" id="help">help</button>
         <div class="cmd param">
             <button class="btn par" id="light-power-button">Light power[%]</button>
@@ -73,6 +74,7 @@
     let light_power = document.querySelector('#light-power');
     let freezer_power_button = document.querySelector('#freezer-power-button');
     let freezer_power = document.querySelector('#freezer-power');
+    let status_container = document.querySelector('.status-container');
     let socket = io();
     socket.on('connect', function() {
         console.log('Connected to server');
@@ -97,6 +99,19 @@
         p.innerHTML = msg;
         p.classList.add('msg');
         values.insertBefore(p, values.firstChild);
+    });
+    socket.on('status', function(msg) {
+        console.log(msg);
+        let data = JSON.parse(msg);
+        console.log(data);
+        status_container.innerHTML = '';
+        for (let key in data) {
+            let p = document.createElement('div');
+            p.innerHTML = key + ': ' + data[key];
+            p.classList.add('msg');
+            p.classList.add('status');
+            status_container.appendChild(p);
+        }
     });
     send.addEventListener('click', function()                  {socket.emit('command', input.value);});
     light_power_button.addEventListener('click', function()    {
