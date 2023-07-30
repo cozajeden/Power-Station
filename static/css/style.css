@@ -149,3 +149,63 @@ input {
 .input > .btn {
     padding: 0.4rem 1rem;
 }
+
+@media (orientation: portrait) {
+    .my-container, .commands {
+        flex-direction: column;
+    }
+
+    .commands > div:last-child > img {
+        display: none;
+    }
+
+    .cmd:nth-child(2) {
+        min-width: 100%;
+        font-size: 2rem;
+    }
+
+    .commands > div {
+        min-width: 100%;
+        font-size: 2rem;
+    }
+
+    .cmd{
+        min-width: 100%;
+        font-size: 2rem;
+    }
+
+    .param *{
+        min-width: 50%;
+        font-size: 2rem;
+    }
+
+    .input {
+        min-width: 100%;
+    }
+
+    .input > input {
+        min-width: 70%;
+        font-size: 2rem;
+    }
+
+    .input > .btn {
+        flex: 1;
+        font-size: 2rem;
+    }
+
+    .communication {
+        min-width: 100%;
+    }
+
+    .values {
+        font-size: 2rem;
+    }
+
+    .commands {
+        min-width: 100%;
+    }
+
+    .stat {
+        font-size: 2rem;
+    }
+}
